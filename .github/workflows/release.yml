@@ -45,9 +45,7 @@ jobs:
           -p:IncludeNativeLibrariesForSelfExtract=true
 
       - name: Upload artifacts
-        uses: Shopify/upload-to-release@v1.0.1
+        uses: AButler/upload-release-assets@v2.0
         with:
-          repo-token: ${{ secrets.ACCESS_TOKEN }}
-          name: PDF-Converter${{ matrix.config.extension }}
-          path: ${{ matrix.config.name }}${{ matrix.config.ext }}
-          content-type: application/zip
+          files: ${{ matrix.config.name }}/${{ env.proj }}${{ matrix.config.exe }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
