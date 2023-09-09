@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using PdfConverter.Component;
 using PdfConverter.Helpers;
 using PdfConverter.Models;
+using PdfConverter.Services;
 using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
 
 namespace PdfConverter.ViewModels;
 
@@ -16,13 +18,26 @@ public partial class ShellViewModel : ObservableObject
     private FileItemModel? _file;
 
     [ObservableProperty]
-    private ExporterServiceType[] _services = {
-        ExporterServiceType.Chromium,
-        ExporterServiceType.Syncfusion
+    private IExporterService[] _services = {
+        new ChromiumExporterService()
     };
 
     [ObservableProperty]
-    private ExporterServiceType _service = ExporterServiceType.Chromium;
+    private int _serviceIndex = 0;
+
+    [ObservableProperty]
+    private ImageFormat[] _imageFormats = {
+        ImageFormat.Gif,
+        ImageFormat.Jpeg,
+        ImageFormat.Png,
+        ImageFormat.Tiff
+    };
+
+    [ObservableProperty]
+    private ImageFormat _imageFormat = ImageFormat.Jpeg;
+
+    [ObservableProperty]
+    private int? _rescale = 4;
 
     [ObservableProperty]
     private string _output = string.Empty;
@@ -39,14 +54,12 @@ public partial class ShellViewModel : ObservableObject
     [RelayCommand]
     private Task Export()
     {
-        IExporterService exporter = ExporterServiceProvider.GetService(Service);
-
         bool improviseOutput = !Directory.Exists(Output);
 
         foreach (var file in Files.Select(x => x.FilePath)) {
             string output = improviseOutput ? Path.GetDirectoryName(file) ?? string.Empty : Output;
             Directory.CreateDirectory(output);
-            exporter.Export(file, output);
+            Services[ServiceIndex].Export(file, output, ImageFormat, Rescale ?? 4);
         }
 
         return Task.CompletedTask;
