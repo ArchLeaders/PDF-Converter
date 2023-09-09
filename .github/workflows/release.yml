@@ -15,7 +15,7 @@ jobs:
         config:
           - name: Windows
             os: ubuntu-latest
-            runtime: win-x641
+            runtime: win-x64
             extension: .exe
 
     env:
