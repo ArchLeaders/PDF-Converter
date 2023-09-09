@@ -11,7 +11,7 @@ public partial class ShellViewModel : ObservableObject
 {
     [ObservableProperty]
     private ObservableCollection<FileItemModel> _files = new();
-    
+
     [ObservableProperty]
     private FileItemModel? _file;
 
