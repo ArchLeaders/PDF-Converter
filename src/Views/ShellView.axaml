@@ -2,6 +2,7 @@
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:icons="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="using:PdfConverter.Models"
         xmlns:vm="using:PdfConverter.ViewModels"
@@ -73,17 +74,31 @@
 
         <Grid Grid.Row="1"
               Margin="20"
-              ColumnDefinitions="Auto,*,Auto">
-            <ComboBox ItemsSource="{Binding Services}" SelectedItem="{Binding Service}" />
+              ColumnDefinitions="Auto,*,Auto,Auto">
+            <ComboBox ItemsSource="{Binding Services}"
+                      SelectedItem="{Binding Service}"
+                      ToolTip.Tip="PDF Library" />
             <TextBox Grid.Column="1"
                      Margin="10,0,0,0"
                      Text="{Binding Output}"
+                     ToolTip.Tip="Destination Folder"
                      Watermark="Output Folder" />
             <Button Grid.Column="2"
                     Margin="10,0,0,0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
                     Command="{Binding BrowseCommand}"
                     CommandParameter="Output Folder"
-                    Content="..." />
+                    Content="..."
+                    ToolTip.Tip="Browse for Output Folder" />
+            <Button Grid.Column="3"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    Command="{Binding ExportCommand}"
+                    ToolTip.Tip="Export JPG Files">
+                <icons:Icon Value="fa-arrow-right-from-bracket" />
+            </Button>
         </Grid>
     </Grid>
 </Window>
