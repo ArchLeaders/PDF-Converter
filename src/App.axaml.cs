@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using PdfConverter.Helpers;
 using PdfConverter.ViewModels;
 using PdfConverter.Views;
 
@@ -21,6 +22,8 @@ public partial class App : Application
             desktop.MainWindow = new ShellView {
                 DataContext = new ShellViewModel(),
             };
+
+            BrowserDialog.StorageProvider = desktop.MainWindow.StorageProvider;
         }
 
         base.OnFrameworkInitializationCompleted();
