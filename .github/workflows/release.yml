@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    permissions: write-all
+    name: Build ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - name: Windows
+            os: ubuntu-latest
+            runtime: win-x641
+            extension: .exe
+
+    env:
+      proj: PdfConverter
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: recursive
+
+      - name: Install DotNET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.x"
+
+      - name: Publish PDF Converter
+        shell: bash
+        run: |
+          dotnet publish src/${{ env.proj }}.csproj \
+          -r ${{ matrix.config.runtime }} \
+          -c Release \
+          --sc false \
+          --version-suffix ${{ github.event.release.tag_name }} \
+          -o ${{ matrix.config.name }} \
+          -p:Version=${{ github.event.release.tag_name }} \
+          -p:PublishSingleFile=true \
+          -p:IncludeNativeLibrariesForSelfExtract=true
+
+      - name: Upload artifacts
+        uses: Shopify/upload-to-release@v1.0.1
+        with:
+          repo-token: ~
+          name: PDF-Converter${{ matrix.config.extension }}
+          path: ${{ matrix.config.name }}${{ matrix.config.ext }}
+          content-type: application/zip
