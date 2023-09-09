@@ -47,5 +47,5 @@ jobs:
       - name: Upload artifacts
         uses: AButler/upload-release-assets@v2.0
         with:
-          files: ${{ matrix.config.name }}/${{ env.proj }}${{ matrix.config.exe }}
+          files: ${{ matrix.config.name }}/${{ env.proj }}${{ matrix.config.extension }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
